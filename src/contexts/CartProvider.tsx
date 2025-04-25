@@ -64,12 +64,50 @@ const CartProvider = ({ children }: ICartProviderProps) => {
       ...cartState,
       cart: [...newCart]
     })
-  } 
+  }
+
+  const increaseQuantityOfProduct = (product: IDessert) => {
+    const productInCartIndex = cartState.cart.findIndex( item => item.product.name === product.name);
+    const newCart = structuredClone(cartState);
+    newCart.cart[productInCartIndex].quantity += 1;
+    newCart.cart[productInCartIndex].subTotal = newCart.cart[productInCartIndex].quantity * newCart.cart[productInCartIndex].product.price;
+    return setCartState(newCart);
+  }
+
+    const decreaseQuantityOfProduct = (product: IDessert) => {
+    const productInCartIndex = cartState.cart.findIndex( item => item.product.name === product.name);
+    const newCart = structuredClone(cartState);
+    if (newCart.cart[productInCartIndex].quantity >= 2) {
+      newCart.cart[productInCartIndex].quantity -= 1;
+      newCart.cart[productInCartIndex].subTotal = newCart.cart[productInCartIndex].quantity * newCart.cart[productInCartIndex].product.price;
+      return setCartState(newCart);
+    }
+
+    if (newCart.cart[productInCartIndex].quantity === 1) {
+      newCart.cart[productInCartIndex].quantity -= 1;
+      newCart.cart[productInCartIndex].subTotal = newCart.cart[productInCartIndex].quantity * newCart.cart[productInCartIndex].product.price;
+      return setCartState(prevState => (
+        {
+          ...prevState,
+          cart: [...newCart.cart.filter(item => item.quantity > 0)]
+        }
+      ))
+    }
+
+    setCartState(prevState => (
+      {
+        ...prevState,
+        cart: [...newCart.cart.filter(item => item.quantity > 0)]
+      }
+    ))
+  }
 
   const data = {
     cartState,
     addToCart,
-    removeToCart
+    removeToCart,
+    increaseQuantityOfProduct,
+    decreaseQuantityOfProduct
   }
 
   return (

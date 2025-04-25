@@ -5,6 +5,8 @@ interface ICartContext {
   cartState: ICartState;
   addToCart: (product: IDessert) => void;
   removeToCart: (product: IDessert) => void;
+  increaseQuantityOfProduct: (product: IDessert) => void;
+  decreaseQuantityOfProduct: (product: IDessert) => void;
 }
 
 export const CartContext = createContext<ICartContext | undefined>(undefined)
