@@ -4,7 +4,11 @@ import iconCarbonNeutralItem from "../assets/images/icon-carbon-neutral.svg"
 import { useCartContext } from "../hooks/useCartContext.ts"
 import { formatterUSD } from "../lib/formatterMoney.ts";
 
-const CartComp = () => {
+interface ICartCompProps {
+  handlerOpenModalOrder: () => void;
+}
+
+const CartComp = ({ handlerOpenModalOrder }: ICartCompProps) => {
 const { cartState, removeToCart } = useCartContext();
 
   return (
@@ -53,6 +57,7 @@ const { cartState, removeToCart } = useCartContext();
               </div>
               <button 
                 className="w-full px-4 py-3 bg-custom-red rounded-full text-center font-600-custom text-white cursor-pointer"
+                onClick={handlerOpenModalOrder}
               >Confirm Order</button>
             </div>
           ) : (
